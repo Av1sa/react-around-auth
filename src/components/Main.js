@@ -1,68 +1,61 @@
 import React from "react";
 import editIconLarge from "../images/edit_large_icon.svg";
+import api from "../utils/Api";
+import Card from "../components/Card";
 
-function Main({ onEditProfile, onEditAvatar, onAddPlace }) {
+function Main({ onEditProfile, onEditAvatar, onAddPlace, onDeleteClick, onCardClick }) {
+  const [userName, setUserName] = React.useState("");
+  const [userDescription, setUserDescription] = React.useState("");
+  const [userAvatar, setUserAvatar] = React.useState("");
+  const [cards, setCards] = React.useState([]);
+  const [userId, setUserId] = React.useState("");
+
+  React.useEffect(() => {
+    api.getAppInfo().then(([cardListData, userInfoData]) => {
+      setUserId(userInfoData._id);
+      setUserName(userInfoData.name);
+      setUserDescription(userInfoData.about);
+      setUserAvatar(userInfoData.avatar);
+      setCards(cardListData);
+    });
+  }, []);
+
+
   return (
     <main>
       {/* Profile Section  */}
       <section className="profile">
         <div className="profile__avatar-container">
-          <img alt="Avatar Pic" className="profile__avatar" />
+          <img alt="Avatar Pic" className="profile__avatar" src={userAvatar} />
           <div className="profile__avatar-edit" onClick={onEditAvatar}>
             <img src={editIconLarge} alt="" />
           </div>
         </div>
         <div className="profile__text-container">
-          <h1 className="profile__name">Loading...</h1>
+          <h1 className="profile__name">{userName}</h1>
           <button
             className="button button_edit"
             onClick={onEditProfile}
           ></button>
-          <p className="profile__description">Loading...</p>
+          <p className="profile__description">{userDescription}</p>
         </div>
         <button className="button button_add" onClick={onAddPlace}></button>
       </section>
 
       {/* Cards Section  */}
       <section className="elements">
-        {/* Cards added dynamically  */}
-        <ul className="cards"></ul>
+        <ul className="cards">
+          {cards.map((card) => (
+            <Card
+              card={card}
+              userId={userId}
+              onDeleteClick={onDeleteClick}
+              onCardClick={onCardClick}
+              key={card._id}
+            />
+          ))}
+        </ul>
       </section>
-
-      {/* Popups  */}
-      <section className="popup-forms">
-        {/* Confirm Delete Card  */}
-        <div className="popup popup_delete-card">
-          <div className="popup__container popup__container_form">
-            <form className="popup__form" noValidate>
-              <h2 className="popup__title">Are You Sure?</h2>
-              <button
-                type="submit"
-                className="button button_save popup__input"
-                id="card_id"
-              >
-                Yes
-              </button>
-            </form>
-            <button className="button button_close"></button>
-          </div>
-        </div>
-      </section>
-
-      {/* Card Template  */}
-      <template className="template-card">
-        <li className="card">
-          <img className="card__image" alt="" />
-          <div className="card__text-container">
-            <p className="card__text"></p>
-            <div className="card__likes-container">
-              <button className="button button_like"></button>
-              <p className="card__likes-text"></p>
-            </div>
-          </div>
-          <button className="button button_delete"></button>
-        </li>
-      </template>
     </main>
   );
 }

@@ -3,6 +3,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
+import PopupWithImage from "./PopupWithImage";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(
@@ -12,6 +13,13 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(
     false
   );
+  const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(
+    false
+  );
+
+  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+
+  const [selectedCard, setSelectedCard] = React.useState("");
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -22,10 +30,19 @@ function App() {
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
   };
+  const handleDeleteCardClick = () => {
+    setIsDeleteCardPopupOpen(!isDeleteCardPopupOpen);
+  };
+  const handleCardClick = (card) => {
+    setIsImagePopupOpen(!isImagePopupOpen);
+    setSelectedCard(card);
+  };
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setIsDeleteCardPopupOpen(false);
+    setIsImagePopupOpen(false);
   };
 
   const editProfileChildren = () => {
@@ -106,9 +123,19 @@ function App() {
     );
   };
 
+  const deleteCardChildren = () => {};
+
   return (
     <div>
       <Header />
+      <Main
+        onEditProfile={handleEditProfileClick}
+        onEditAvatar={handleEditAvatarClick}
+        onAddPlace={handleAddPlaceClick}
+        onDeleteClick={handleDeleteCardClick}
+        onCardClick={handleCardClick}
+      />
+      <Footer />
       <PopupWithForm
         name="edit-profile"
         title="Edit Profile"
@@ -126,19 +153,26 @@ function App() {
         children={editAvatarChildren()}
       />
       <PopupWithForm
-        name="new-placee"
+        name="new-place"
         title="New Place"
         buttonText="Save"
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
         children={addPlaceChildren()}
       />
-      <Main
-        onEditProfile={handleEditProfileClick}
-        onEditAvatar={handleEditAvatarClick}
-        onAddPlace={handleAddPlaceClick}
+      <PopupWithForm
+        name="delete-card"
+        title="Are You Shure?"
+        buttonText="Yes"
+        isOpen={isDeleteCardPopupOpen}
+        onClose={closeAllPopups}
+        children={deleteCardChildren()}
       />
-      <Footer />
+      <PopupWithImage
+        card={selectedCard}
+        isOpen={isImagePopupOpen}
+        onClose={closeAllPopups}
+      />
     </div>
   );
 }
