@@ -3,7 +3,13 @@ import editIconLarge from "../images/edit_large_icon.svg";
 import api from "../utils/Api";
 import Card from "../components/Card";
 
-function Main({ onEditProfile, onEditAvatar, onAddPlace, onDeleteClick, onCardClick }) {
+function Main({
+  onEditProfile,
+  onEditAvatar,
+  onAddPlace,
+  onDeleteClick,
+  onCardClick,
+}) {
   const [userName, setUserName] = React.useState("");
   const [userDescription, setUserDescription] = React.useState("");
   const [userAvatar, setUserAvatar] = React.useState("");
@@ -11,15 +17,19 @@ function Main({ onEditProfile, onEditAvatar, onAddPlace, onDeleteClick, onCardCl
   const [userId, setUserId] = React.useState("");
 
   React.useEffect(() => {
-    api.getAppInfo().then(([cardListData, userInfoData]) => {
-      setUserId(userInfoData._id);
-      setUserName(userInfoData.name);
-      setUserDescription(userInfoData.about);
-      setUserAvatar(userInfoData.avatar);
-      setCards(cardListData);
-    });
+    api
+      .getAppInfo()
+      .then(([cardListData, userInfoData]) => {
+        setUserId(userInfoData._id);
+        setUserName(userInfoData.name);
+        setUserDescription(userInfoData.about);
+        setUserAvatar(userInfoData.avatar);
+        setCards(cardListData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
-
 
   return (
     <main>

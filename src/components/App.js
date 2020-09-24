@@ -19,22 +19,22 @@ function App() {
 
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
 
-  const [selectedCard, setSelectedCard] = React.useState("");
+  const [selectedCard, setSelectedCard] = React.useState({});
 
   const handleEditAvatarClick = () => {
-    setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
+    setIsEditAvatarPopupOpen(true);
   };
   const handleEditProfileClick = () => {
-    setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
+    setIsEditProfilePopupOpen(true);
   };
   const handleAddPlaceClick = () => {
-    setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
+    setIsAddPlacePopupOpen(true);
   };
   const handleDeleteCardClick = () => {
-    setIsDeleteCardPopupOpen(!isDeleteCardPopupOpen);
+    setIsDeleteCardPopupOpen(true);
   };
   const handleCardClick = (card) => {
-    setIsImagePopupOpen(!isImagePopupOpen);
+    setIsImagePopupOpen(true);
     setSelectedCard(card);
   };
   const closeAllPopups = () => {
@@ -43,6 +43,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsDeleteCardPopupOpen(false);
     setIsImagePopupOpen(false);
+    setSelectedCard({});
   };
 
   const editProfileChildren = () => {

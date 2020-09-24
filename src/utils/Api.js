@@ -4,22 +4,22 @@ class Api {
     this.headers = headers;
   }
 
+  _getResponseData(res) {
+    return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
+  }
+
   //GET Get initial cards
   getInitialCards() {
     return fetch(`${this.baseUrl}/cards`, {
       headers: this.headers,
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
-    );
+    }).then((res) => this._getResponseData(res));
   }
 
   //GET Get user info
   getUserInfo() {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: this.headers,
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
-    );
+    }).then((res) => this._getResponseData(res));
   }
 
   //PATCH Set user info
@@ -28,9 +28,7 @@ class Api {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({ name, about }),
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
-    );
+    }).then((res) => this._getResponseData(res));
   }
 
   //PATCH Set user avatar
@@ -39,9 +37,7 @@ class Api {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({ avatar }),
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
-    );
+    }).then((res) => this._getResponseData(res));
   }
 
   //POST Add new place
@@ -50,9 +46,7 @@ class Api {
       headers: this.headers,
       method: "POST",
       body: JSON.stringify({ name, link }),
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
-    );
+    }).then((res) => this._getResponseData(res));
   }
 
   //DELETE Remove place
@@ -60,9 +54,7 @@ class Api {
     return fetch(`${this.baseUrl}/cards/${cardId}`, {
       headers: this.headers,
       method: "DELETE",
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
-    );
+    }).then((res) => this._getResponseData(res));
   }
 
   //PUT/DELETE Change Like status
@@ -70,9 +62,7 @@ class Api {
     return fetch(`${this.baseUrl}/cards/likes/${cardId}`, {
       headers: this.headers,
       method: method,
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
-    );
+    }).then((res) => this._getResponseData(res));
   }
 
   //Get initial data

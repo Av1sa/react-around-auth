@@ -24,16 +24,19 @@ function Card({ card, onDeleteClick, onCardClick, userId }) {
 
   return (
     <li className="card">
-      <img className="card__image" alt={`Pic: ${name}`} src={link} onClick={handleClick}/>
+      <img
+        className="card__image"
+        alt={`Pic: ${name}`}
+        src={link}
+        onClick={handleClick}
+      />
       <div className="card__text-container">
         <p className="card__text">{name}</p>
         <div className="card__likes-container">
           <button
-            className={
-              isLikedByCurrentUser
-                ? "button button_like button_like-black"
-                : "button button_like"
-            }
+            className={`button button_like ${
+              isLikedByCurrentUser && "button_like-black"
+            }`}
             onClick={handleLikeIcon}
           />
           <p className="card__likes-text">{numOfLikes}</p>
