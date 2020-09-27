@@ -1,66 +1,48 @@
 import React from "react";
 import editIconLarge from "../images/edit_large_icon.svg";
-import api from "../utils/Api";
 import Card from "../components/Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main({
+  cards,
+  onCardLike,
+  onCardDelete,
+  onCardClick,
   onEditProfile,
   onEditAvatar,
   onAddPlace,
-  onDeleteClick,
-  onCardClick,
 }) {
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
-  const [cards, setCards] = React.useState([]);
-  const [userId, setUserId] = React.useState("");
-
-  React.useEffect(() => {
-    api
-      .getAppInfo()
-      .then(([cardListData, userInfoData]) => {
-        setUserId(userInfoData._id);
-        setUserName(userInfoData.name);
-        setUserDescription(userInfoData.about);
-        setUserAvatar(userInfoData.avatar);
-        setCards(cardListData);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  const currentUser = React.useContext(CurrentUserContext);
+  const { name, about, avatar } = currentUser;
 
   return (
     <main>
-      {/* Profile Section  */}
       <section className="profile">
         <div className="profile__avatar-container">
-          <img alt="Avatar Pic" className="profile__avatar" src={userAvatar} />
+          <img alt="Avatar Pic" className="profile__avatar" src={avatar} />
           <div className="profile__avatar-edit" onClick={onEditAvatar}>
             <img src={editIconLarge} alt="" />
           </div>
         </div>
         <div className="profile__text-container">
-          <h1 className="profile__name">{userName}</h1>
+          <h1 className="profile__name">{name}</h1>
           <button
             className="button button_edit"
             onClick={onEditProfile}
           ></button>
-          <p className="profile__description">{userDescription}</p>
+          <p className="profile__description">{about}</p>
         </div>
         <button className="button button_add" onClick={onAddPlace}></button>
       </section>
 
-      {/* Cards Section  */}
       <section className="elements">
         <ul className="cards">
           {cards.map((card) => (
             <Card
               card={card}
-              userId={userId}
-              onDeleteClick={onDeleteClick}
+              onCardDelete={onCardDelete}
               onCardClick={onCardClick}
+              onCardLike={onCardLike}
               key={card._id}
             />
           ))}

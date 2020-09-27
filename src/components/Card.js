@@ -1,25 +1,22 @@
 import React from "react";
-import api from "../utils/Api";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({ card, onDeleteClick, onCardClick, userId }) {
-  const { name, link, likes, _id, owner } = card;
-  const isCreatedByCurrentUser = owner._id === _id;
+function Card({ card, onCardDelete, onCardClick, onCardLike }) {
+  const currentUser = React.useContext(CurrentUserContext);
+  const { name, link, likes, owner } = card;
+  const isOwn = currentUser._id === owner._id;
+  const isLiked = likes.some((item) => item._id === currentUser._id);
 
-  const [isLikedByCurrentUser, setIsLikedByCurrentUser] = React.useState(
-    likes.some((item) => item._id === userId)
-  );
-  const [numOfLikes, setNumOfLikes] = React.useState(likes.length);
-
-  const handleLikeIcon = () => {
-    setIsLikedByCurrentUser(!isLikedByCurrentUser);
-    api
-      .changeLikeCardStatus(_id, isLikedByCurrentUser ? "DELETE" : "PUT")
-      .then((res) => setNumOfLikes(res.likes.length))
-      .catch((err) => `Error: ${err}`);
+  const handleLikeClick = () => {
+    onCardLike(card);
   };
 
   function handleClick() {
     onCardClick(card);
+  }
+
+  function handleDeleteClick() {
+    onCardDelete(card);
   }
 
   return (
@@ -34,16 +31,14 @@ function Card({ card, onDeleteClick, onCardClick, userId }) {
         <p className="card__text">{name}</p>
         <div className="card__likes-container">
           <button
-            className={`button button_like ${
-              isLikedByCurrentUser && "button_like-black"
-            }`}
-            onClick={handleLikeIcon}
+            className={`button button_like ${isLiked && "button_like-black"}`}
+            onClick={handleLikeClick}
           />
-          <p className="card__likes-text">{numOfLikes}</p>
+          <p className="card__likes-text">{likes.length}</p>
         </div>
       </div>
-      {isCreatedByCurrentUser && (
-        <button className="button button_delete" onClick={onDeleteClick} />
+      {isOwn && (
+        <button className="button button_delete" onClick={handleDeleteClick} />
       )}
     </li>
   );
