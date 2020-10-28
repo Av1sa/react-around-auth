@@ -31,7 +31,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
             pattern="[A-Za-z -]+"
             required
             id="name-input"
-            value={name}
+            value={name || ""}
             onChange={(e) => setName(e.target.value)}
           />
           <span id="name-input-error" className="popup__input-error"></span>
@@ -45,7 +45,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
             maxLength="200"
             required
             id="desc-input"
-            value={description}
+            value={description || ""}
             onChange={(e) => setDescription(e.target.value)}
           />
           <span className="popup__input-error" id="desc-input-error"></span>
