@@ -70,9 +70,9 @@ class Api {
     return Promise.all([this.getInitialCards(), this.getUserInfo()]);
   }
 }
-//Init api
+
 const api = new Api({
-  baseUrl: "https://around.nomoreparties.co/v1/group-1",
+  baseUrl: "https://around.nomoreparties.co/v1/group-1", 
   headers: {
     Authorization: "02dcf3f3-4313-4731-b00a-f80d0e88b6bf",
     "Content-Type": "application/json",
