@@ -26,7 +26,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [email, setEmail] = useState(false);
+  const [email, setEmail] = useState("");
   const history = useHistory();
 
   useEffect(() => {
@@ -50,8 +50,7 @@ function App() {
       .validateUser(token)
       .then((user) => {
         setLoggedIn(true);
-        setEmail(user.email);
-        setCurrentUser(user);
+        setEmail(user.data.email);
         history.push("/");
       })
       .catch((err) => console.log(err));
@@ -121,19 +120,22 @@ function App() {
       .then((newCard) => {
         const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
         setCards(newCards);
-      });
+      })
+      .catch((err) => console.log(err));
   };
   const handleCardDelete = (card) => {
-    api.removeCard(card._id).then((res) => {
-      const newCards = cards.filter((c) => c._id !== card._id);
-      setCards(newCards);
-    });
+    api
+      .removeCard(card._id)
+      .then((res) => {
+        const newCards = cards.filter((c) => c._id !== card._id);
+        setCards(newCards);
+      })
+      .catch((err) => console.log(err));
   };
   const handleCardClick = (card) => {
     setIsImagePopupOpen(true);
     setSelectedCard(card);
   };
-
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -144,7 +146,6 @@ function App() {
     setIsSuccessTooltipOpen(false);
     setIsErrorTooltipOpen(false);
   };
-
   const handleSignOut = () => {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
