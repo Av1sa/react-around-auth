@@ -12,7 +12,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
-import api from "../utils/api";
+import api from "../utils/Api";
 import auth from "../utils/auth";
 
 function App() {
