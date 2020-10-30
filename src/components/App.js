@@ -167,10 +167,9 @@ function App() {
   const handleRegister = (data) => {
     auth
       .registerUser(data)
-      .then(() => {
-        history.push("/signin");
-        handleSignIn(data);
+      .then((res) => {
         openSuccessTooltip();
+        history.push("/signin");
       })
       .catch((err) => {
         openErrorTooltip();
